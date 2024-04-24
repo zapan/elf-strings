@@ -83,6 +83,7 @@ func (r *ElfReader) ReaderParseStrings(buf []byte) map[uint64][]byte {
 
 	for i := uint64(0); i < length; i++ {
 		if len(slice[i]) == 0 {
+			offset += 1
 			continue
 		}
 

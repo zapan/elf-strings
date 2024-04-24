@@ -26,6 +26,7 @@ var (
 	colorOpt    = flag.Bool("no-color", false, "disable color output in the results")
 	trimOpt     = flag.Bool("no-trim", false, "disable triming whitespace and trailing newlines")
 	humanOpt    = flag.Bool("no-human", false, "don't validate that its a human readable string, this could increase the amount of junk.")
+	sectionOpt  = flag.String("section", "", "parse just a specific section")
 )
 
 // ReadSection is the main logic here
@@ -179,11 +180,23 @@ func main() {
 
 	ReadBasic(r)
 
-	sections := []string{".dynstr", ".rodata", ".rdata",
-		".strtab", ".comment", ".note",
-		".stab", ".stabstr", ".note.ABI-tag", ".note.gnu.build-id"}
-
-	for _, section := range sections {
-		ReadSection(r, section)
+	if *sectionOpt == "" {
+		sections := []string{
+			".dynstr",
+			".rodata",
+			".rdata",
+			".strtab",
+			".comment",
+			".note",
+			".stab",
+			".stabstr",
+			".note.ABI-tag",
+			".note.gnu.build-id",
+		}
+		for _, section := range sections {
+			ReadSection(r, section)
+		}
+	} else {
+		ReadSection(r, *sectionOpt)
 	}
 }
